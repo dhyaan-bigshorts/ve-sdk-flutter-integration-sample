@@ -29,53 +29,50 @@ class VideoEditorModule {
 
             // IMPORTANT! order of modules is required
             modules(
-                VeSdkKoinModule().module,
-                VeExportKoinModule().module,
-                VePlaybackSdkKoinModule().module,
+                    VeSdkKoinModule().module,
+                    VeExportKoinModule().module,
+                    VePlaybackSdkKoinModule().module,
 
-                // Use AudioBrowserKoinModule ONLY if your contract includes this feature.
-                AudioBrowserKoinModule().module,
+                    // Use AudioBrowserKoinModule ONLY if your contract includes this feature.
+                    AudioBrowserKoinModule().module,
 
-                // IMPORTANT! ArCloudKoinModule should be set before TokenStorageKoinModule to get effects from the cloud
-                ArCloudKoinModule().module,
+                    // IMPORTANT! ArCloudKoinModule should be set before TokenStorageKoinModule to
+                    // get effects from the cloud
+                    ArCloudKoinModule().module,
+                    VeUiSdkKoinModule().module,
+                    VeFlowKoinModule().module,
+                    BanubaEffectPlayerKoinModule().module,
+                    GalleryKoinModule().module,
 
-                VeUiSdkKoinModule().module,
-                VeFlowKoinModule().module,
-                BanubaEffectPlayerKoinModule().module,
-                GalleryKoinModule().module,
-
-                // Sample integration module
-                SampleIntegrationVeKoinModule().module,
+                    // Sample integration module
+                    SampleIntegrationVeKoinModule().module,
             )
         }
     }
 }
 
 /**
- * All dependencies mentioned in this module will override default
- * implementations provided in VE UI SDK.
- * Some dependencies has no default implementations. It means that
- * these classes fully depends on your requirements
+ * All dependencies mentioned in this module will override default implementations provided in VE UI
+ * SDK. Some dependencies has no default implementations. It means that these classes fully depends
+ * on your requirements
  */
 private class SampleIntegrationVeKoinModule {
 
     val module = module {
         single<ArEffectsRepositoryProvider>(createdAtStart = true) {
             ArEffectsRepositoryProvider(
-                arEffectsRepository = get(named("backendArEffectsRepository")),
-                ioDispatcher = get(named("ioDispatcher"))
+                    arEffectsRepository = get(named("backendArEffectsRepository")),
+                    ioDispatcher = get(named("ioDispatcher"))
             )
         }
 
-
         // Audio Browser provider implementation.
-        single<ContentFeatureProvider<TrackData, Fragment>>(
-            named("musicTrackProvider")
-        ) {
+        single<ContentFeatureProvider<TrackData, Fragment>>(named("musicTrackProvider")) {
             if (MainActivity.CONFIG_ENABLE_CUSTOM_AUDIO_BROWSER) {
                 AudioBrowserContentProvider()
             } else {
-                // Default implementation that supports Soundstripe, Mubert and Local audio stored on the device
+                // Default implementation that supports Soundstripe, Mubert and Local audio stored
+                // on the device
                 AudioBrowserMusicProvider()
             }
         }
